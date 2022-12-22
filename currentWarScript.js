@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
 import { getDatabase, ref, child, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
-const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app"};
+const firebaseConfig = {databaseURL: "https://stats-mk-debug-default-rtdb.europe-west1.firebasedatabase.app"};
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const warRaference = ref(database, 'newWars');
@@ -41,8 +41,8 @@ onValue(warRaference, (snapshot) => {
         )
       );
       opponentScore = (82*tracks.length) - hostScore;
-    }
-    refreshOverlay(hostScore, opponentScore, mapCount)   
+    };
+    refreshOverlay(hostScore, opponentScore, mapCount);   
   });
 });
 
@@ -63,7 +63,7 @@ function posToPoints(pos) {
 }
 
 function refreshOverlay(host, opponent, count) {
-  const global = host - opponent
+  const global = host - opponent;
   document.getElementById("mapText").textContent = "Maps restantes : " + (12-count);
   document.getElementById("hostS").textContent = host;
   document.getElementById("opponentS").textContent = opponent;
