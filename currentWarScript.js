@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
 import { getDatabase, ref, child, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
-const firebaseConfig = {databaseURL: "https://stats-mk-debug-default-rtdb.europe-west1.firebasedatabase.app"};
+const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app"};
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const warRaference = ref(database, 'newWars');
