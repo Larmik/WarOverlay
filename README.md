@@ -1,6 +1,6 @@
 Hébergement: https://botlarioverlayhr.000webhostapp.com/
 
-![image](https://user-images.githubusercontent.com/36506614/209156613-716c3f5c-dc52-4a98-aae2-91bcd5cb9f24.png)
+![image](https://user-images.githubusercontent.com/98359745/209438816-d651951c-7e2c-49db-8722-c0841402786c.png)
 
 ## Polices à installer pour affichage optimisé
 
