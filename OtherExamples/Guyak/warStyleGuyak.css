@@ -1,0 +1,61 @@
+  div{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 153px;
+    width: 1543px;
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    background: rgba(0, 0, 0, 0.7);
+    border-collapse:separate;
+    border:solid rgba(255, 0, 0, 0.7) 3px;
+    align-self: center;
+  }
+
+  #mapTab {
+    border-top-left-radius:15px;
+    border-bottom-left-radius:15px;
+  }
+
+  #scoreTab {
+    border-top-right-radius:15px;
+    border-bottom-right-radius:15px;
+  }
+  
+  th, td {
+    font-family: "Franklin Gothic Heavy", Arial, sans-serif;
+    color: #ff0000;
+    text-align: center;
+    text-shadow: 3px 3px black;
+  }
+
+  #hostName, #opponentName {
+    width: 450px;
+    font-size: 45px;
+  }
+
+  #scoreDiff {
+    width: 100px;
+    font-family: "DS-Digital", Arial, sans-serif;
+    font-size: 50px;
+  }
+
+  #hostS, #opponentS {
+    font-family: "DS-Digital", Arial, sans-serif;
+    color: #ffffff;
+    font-size: 50px;
+  }
+
+  #mapText {
+    max-width: 100px;
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  #mapsLeft {
+    color: #ffffff;
+    font-size: 50px;
+  }
