@@ -4,7 +4,7 @@ import { getDatabase, ref, child, get, onValue } from "https://www.gstatic.com/f
 const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app"};
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const warRaference = ref(database, 'newWars/' + 1643723546718);
+const warRaference = ref(database, 'currentWars/' + 1643723546718);
 const teamReference = ref(database, 'teams')
 
 var warId = "-1";
