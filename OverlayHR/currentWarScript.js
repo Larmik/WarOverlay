@@ -7,17 +7,13 @@ const database = getDatabase(app);
 const warRaference = ref(database, 'currentWars/' + 1643723546718);
 const teamReference = ref(database, 'teams')
 
-var warId = "-1";
 var teamHost = "-1";
 var teamOpponent = "-1";
 var hostName = "";
-
 onValue(warRaference, (snapshot) => {
   let war = snapshot.val();
-  warId = war.mid;
   teamHost = war.teamHost;
   teamOpponent = war.teamOpponent;
-  
   get(child(teamReference, teamHost)).then((snapshot) => {
     hostName = snapshot.val().name;
   })
@@ -26,35 +22,36 @@ onValue(warRaference, (snapshot) => {
     document.getElementById("hostName").textContent = hostName;
     document.getElementById("opponentName").textContent = snapshot.val().name;
   })
-  get(child(warRaference, warId)).then((snapshot) => {
-    const tracks = snapshot.val().warTracks;
-    var mapCount = 0;
-    var hostScore = 0;
-    var opponentScore = 0;
-    for (let div of document.querySelectorAll("div")) { 
-      div.remove();
-    }
-    if (tracks) {
-      mapCount = tracks.length;
-      tracks.forEach(track =>
-        track.warPositions.forEach(position => 
-          hostScore += posToPoints(position.position)
-        )
-      );
-      opponentScore = (82*tracks.length) - hostScore;
-    }
-    var globalScore = hostScore - opponentScore;
-    if (globalScore < 0)
-      document.getElementById("scoreDiff").style.color = "#fa8072"
-    else if (globalScore > 0)
-      document.getElementById("scoreDiff").style.color = "#7fff00"
-    else
-      document.getElementById("scoreDiff").style.color = "#aaaaaa"
-    document.getElementById("mapText").textContent = "Maps restantes : " + (12-mapCount);
-    document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
-    document.getElementById("hostS").textContent = hostScore;
-    document.getElementById("opponentS").textContent = opponentScore;
-  });
+
+  var mapCount = 0;
+  var hostScore = 0;
+  var opponentScore = 0;
+  var tracks = war.warTracks;
+
+  for (let div of document.querySelectorAll("div")) { 
+    div.remove();
+  }
+  if (tracks) {
+    mapCount = tracks.length;
+    tracks.forEach(track =>
+      track.warPositions.forEach(position => 
+        hostScore += posToPoints(position.position)
+      )
+    );
+    opponentScore = (82*tracks.length) - hostScore;
+  }
+  var globalScore = hostScore - opponentScore;
+  if (globalScore < 0)
+    document.getElementById("scoreDiff").style.color = "#fa8072"
+  else if (globalScore > 0)
+    document.getElementById("scoreDiff").style.color = "#7fff00"
+  else
+    document.getElementById("scoreDiff").style.color = "#aaaaaa"
+  document.getElementById("mapText").textContent = "Maps restantes : " + (12-mapCount);
+  document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
+  document.getElementById("hostS").textContent = hostScore;
+  document.getElementById("opponentS").textContent = opponentScore;
+ 
 });
 
 function posToPoints(pos) {
