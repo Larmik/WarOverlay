@@ -14,12 +14,10 @@ var hostName = "";
 
 onValue(warRaference, (snapshot) => {
   let war = snapshot.val();
-  for (var id in wars) {
-    let war = snapshot.child(id).val();
-    warId = war.mid;
-    teamHost = war.teamHost;
-    teamOpponent = war.teamOpponent;
-  };
+  warId = war.mid;
+  teamHost = war.teamHost;
+  teamOpponent = war.teamOpponent;
+  
   get(child(teamReference, teamHost)).then((snapshot) => {
     hostName = snapshot.val().name;
   })
