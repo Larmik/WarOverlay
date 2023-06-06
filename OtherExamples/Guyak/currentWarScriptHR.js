@@ -7,59 +7,47 @@ const database = getDatabase(app);
 const warRaference = ref(database, 'currentWars/' + 1643723546718);
 const teamReference = ref(database, 'teams')
 
-var warId = "-1";
 var teamHost = "-1";
 var teamOpponent = "-1";
 var hostName = "";
-
 onValue(warRaference, (snapshot) => {
-  let wars = snapshot.val();
-  for (var id in wars) {
-    let war = snapshot.child(id).val();
-    if (!war.warTracks || war.warTracks.length < 12) {
-      warId = war.mid;
-      teamHost = war.teamHost;
-      teamOpponent = war.teamOpponent;
-    };
-  };
-  if (warId == "-1") 
-    document.querySelector("h1").textContent = "Aucun match en cours";
-  else {
-    get(child(teamReference, teamHost)).then((snapshot) => {
-      hostName = snapshot.val().name;
-    })
-    get(child(teamReference, teamOpponent)).then((snapshot) => {
-      // document.getElementById("warName").textContent = hostName + " - " + snapshot.val().name;
-      document.getElementById("hostName").textContent = hostName;
-      document.getElementById("opponentName").textContent = snapshot.val().name;
-    })
-    get(child(warRaference, warId)).then((snapshot) => {
-      const tracks = snapshot.val().warTracks;
-      var mapCount = 0;
-      var hostScore = 0;
-      var opponentScore = 0;
-      if (tracks) {
-        mapCount = tracks.length;
-        tracks.forEach(track =>
-          track.warPositions.forEach(position => 
-            hostScore += posToPoints(position.position)
-          )
-        );
-        opponentScore = (82*tracks.length) - hostScore;
-      }
-      var scoreGlobal = hostScore - opponentScore;
-      if (scoreGlobal < 0)
-        document.getElementById("scoreDiff").style.color = "#fa8072"
-      else if (scoreGlobal > 0)
-        document.getElementById("scoreDiff").style.color = "#7fff00"
-      else
-        document.getElementById("scoreDiff").style.color = "#aaaaaa"
-      document.getElementById("mapsLeft").textContent = (12-mapCount);
-      document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
-      document.getElementById("hostS").textContent = hostScore;
-      document.getElementById("opponentS").textContent = opponentScore;
-    });
-  };
+  let war = snapshot.val();
+  teamHost = war.teamHost;
+  teamOpponent = war.teamOpponent;
+  get(child(teamReference, teamHost)).then((snapshot) => {
+    hostName = snapshot.val().name;
+  })
+  get(child(teamReference, teamOpponent)).then((snapshot) => {
+    // document.getElementById("warName").textContent = hostName + " - " + snapshot.val().name;
+    document.getElementById("hostName").textContent = hostName;
+    document.getElementById("opponentName").textContent = snapshot.val().name;
+  })
+
+  var mapCount = 0;
+  var hostScore = 0;
+  var opponentScore = 0;
+  var tracks = war.warTracks;
+
+  if (tracks) {
+    mapCount = tracks.length;
+    tracks.forEach(track =>
+      track.warPositions.forEach(position => 
+        hostScore += posToPoints(position.position)
+      )
+    );
+    opponentScore = (82*tracks.length) - hostScore;
+  }
+  var globalScore = hostScore - opponentScore;
+  if (globalScore < 0)
+    document.getElementById("scoreDiff").style.color = "#fa8072"
+  else if (globalScore > 0)
+    document.getElementById("scoreDiff").style.color = "#7fff00"
+  else
+    document.getElementById("scoreDiff").style.color = "#aaaaaa"
+  document.getElementById("mapsLeft").textContent = (12-mapCount);
+  document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
+  document.getElementById("hostS").textContent = hostScore;
+  document.getElementById("opponentS").textContent = opponentScore;
 });
 
 function posToPoints(pos) {
