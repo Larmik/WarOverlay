@@ -10,10 +10,12 @@ const teamReference = ref(database, 'teams')
 var teamHost = "-1";
 var teamOpponent = "-1";
 var hostName = "";
+var penalties = [];
 onValue(warRaference, (snapshot) => {
   let war = snapshot.val();
   teamHost = war.teamHost;
   teamOpponent = war.teamOpponent;
+  penalties = war.penalties;
   get(child(teamReference, teamHost)).then((snapshot) => {
     hostName = snapshot.val().name;
   })
@@ -32,6 +34,12 @@ onValue(warRaference, (snapshot) => {
     div.remove();
   }
   if (tracks) {
+    penalites.forEach (penalty =>
+      {if (penalty.teamId = war.teamHost)
+        hostScore -= penalty.amount
+      if (penalty.teamId = war.teamOpponent)
+      opponentScore -= penalty.amount}
+    )
     mapCount = tracks.length;
     tracks.forEach(track =>
       track.warPositions.forEach(position => 
