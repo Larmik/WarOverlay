@@ -34,12 +34,6 @@ onValue(warRaference, (snapshot) => {
     div.remove();
   }
   if (tracks) {
-    penalites.forEach (penalty =>
-      {if (penalty.teamId = war.teamHost)
-        hostScore -= penalty.amount
-      if (penalty.teamId = war.teamOpponent)
-      opponentScore -= penalty.amount}
-    )
     mapCount = tracks.length;
     tracks.forEach(track =>
       track.warPositions.forEach(position => 
@@ -47,6 +41,13 @@ onValue(warRaference, (snapshot) => {
       )
     );
     opponentScore = (82*tracks.length) - hostScore;
+    if (penalties) {
+      penalties.forEach (penalty =>
+        {if (penalty.teamId == war.teamHost)
+          hostScore -= penalty.amount
+        if (penalty.teamId == war.teamOpponent)
+        opponentScore -= penalty.amount}
+    )}
   }
   var globalScore = hostScore - opponentScore;
   if (globalScore < 0)
@@ -56,9 +57,27 @@ onValue(warRaference, (snapshot) => {
   else
     document.getElementById("scoreDiff").style.color = "#aaaaaa"
   document.getElementById("mapText").textContent = "Maps restantes : " + (12-mapCount);
-  document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
+  document.getElementById("scoreDiff").textContent = diffLabel(globalScore);
   document.getElementById("hostS").textContent = hostScore;
   document.getElementById("opponentS").textContent = opponentScore;
+
+  if (globalScore > 40*(12-mapCount))
+  {document.getElementById("winHost").textContent = "WIN";
+  document.getElementById("winHost").style.color = "#7fff00"
+  document.getElementById("winOpponent").textContent = "LOSE";
+  document.getElementById("winOpponent").style.color = "#fa8072"
+  }
+  else if (globalScore < -40*(12-mapCount))
+  {document.getElementById("winOpponent").textContent = "WIN";
+  document.getElementById("winOpponent").style.color = "#7fff00"
+  document.getElementById("winHost").textContent = "LOSE";
+  document.getElementById("winHost").style.color = "#fa8072"
+  }
+  else
+  {
+    document.getElementById("winOpponent").textContent = "";
+    document.getElementById("winHost").textContent = "";
+  }
  
 });
 
