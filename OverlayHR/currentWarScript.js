@@ -81,6 +81,8 @@ onValue(warRaference, (snapshot) => {
   {
     document.getElementById("winOpponent").textContent = "";
     document.getElementById("winHost").textContent = "";
+    document.getElementById("winHost").style.backgroundColor = "transparent";
+    document.getElementById("winOpponent").style.backgroundColor = "transparent";
   }
  
 });
