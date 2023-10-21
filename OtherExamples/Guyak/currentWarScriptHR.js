@@ -57,6 +57,30 @@ onValue(warRaference, (snapshot) => {
   document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
   document.getElementById("hostS").textContent = hostScore;
   document.getElementById("opponentS").textContent = opponentScore;
+
+  if (globalScore > 40*(12-mapCount))
+  {document.getElementById("winHost").textContent = "WIN";
+  document.getElementById("winHost").style.color = "#7fff00";
+  document.getElementById("winOpponent").textContent = "LOSE";
+  document.getElementById("winOpponent").style.color = "#fa8072";
+  document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
+  document.getElementById("winOpponent").style.backgroundColor = "#ffffffb0";
+  }
+  else if (globalScore < -40*(12-mapCount))
+  {document.getElementById("winOpponent").textContent = "WIN";
+  document.getElementById("winOpponent").style.color = "#7fff00"
+  document.getElementById("winHost").textContent = "LOSE";
+  document.getElementById("winHost").style.color = "#fa8072";
+  document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
+  document.getElementById("winOpponent").style.backgroundColor = "#ffffffb0";
+  }
+  else
+  {
+    document.getElementById("winOpponent").textContent = "";
+    document.getElementById("winHost").textContent = "";
+    document.getElementById("winHost").style.backgroundColor = "transparent";
+    document.getElementById("winOpponent").style.backgroundColor = "transparent";
+  }
 });
 
 function posToPoints(pos) {

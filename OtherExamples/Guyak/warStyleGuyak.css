@@ -34,13 +34,14 @@
 
   #hostName, #opponentName {
     width: 450px;
+    height: 100px;
     font-size: 45px;
   }
 
   #scoreDiff {
     width: 100px;
     font-family: "DS-Digital", Arial, sans-serif;
-    font-size: 50px;
+    font-size: 70px;
   }
 
   #hostS, #opponentS {
@@ -51,6 +52,7 @@
 
   #mapText {
     max-width: 100px;
+    height: 100px;
     color: #ffffff;
     font-size: 20px;
   }
@@ -58,4 +60,16 @@
   #mapsLeft {
     color: #ffffff;
     font-size: 50px;
+  }
+
+  #winHost, #winOpponent {
+    width: 30px;
+    font-size: 34px;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+  }
+
+  #winOpponent {
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
   }
