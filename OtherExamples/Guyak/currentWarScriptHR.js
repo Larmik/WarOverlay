@@ -5,24 +5,21 @@ const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const warRaference = ref(database, 'currentWars/' + 874);
-const teamReference = ref(database, 'teams')
+const tagReference = ref(database, 'tags/')
 
 var teamHost = "-1";
 var teamOpponent = "-1";
-var hostName = "";
 var penalties = [];
 onValue(warRaference, (snapshot) => {
   let war = snapshot.val();
   teamHost = war.teamHost;
   teamOpponent = war.teamOpponent;
   penalties = war.penalties;
-  get(child(teamReference, teamHost)).then((snapshot) => {
-    hostName = snapshot.val().name;
-  })
-  get(child(teamReference, teamOpponent)).then((snapshot) => {
-    // document.getElementById("warName").textContent = hostName + " - " + snapshot.val().name;
+  get(tagReference).then((snapshot) => {
+    let hostName = snapshot.val().find((element) => element.teamId == teamHost).tag;
+    let opponentName = snapshot.val().find((element) => element.teamId == teamOpponent).tag;
     document.getElementById("hostName").textContent = hostName;
-    document.getElementById("opponentName").textContent = snapshot.val().name;
+    document.getElementById("opponentName").textContent = opponentName;
   })
 
   var mapCount = 0;
@@ -30,6 +27,9 @@ onValue(warRaference, (snapshot) => {
   var opponentScore = 0;
   var tracks = war.warTracks;
 
+  for (let div of document.querySelectorAll("div")) { 
+    div.remove();
+  }
   if (tracks) {
     mapCount = tracks.length;
     tracks.forEach(track =>
@@ -53,8 +53,8 @@ onValue(warRaference, (snapshot) => {
     document.getElementById("scoreDiff").style.color = "#7fff00"
   else
     document.getElementById("scoreDiff").style.color = "#aaaaaa"
-  document.getElementById("mapsLeft").textContent = (12-mapCount);
-  document.getElementById("scoreDiff").textContent = diffLabel(hostScore - opponentScore);
+  document.getElementById("mapText").textContent = "Maps restantes : " + (12-mapCount);
+  document.getElementById("scoreDiff").textContent = diffLabel(globalScore);
   document.getElementById("hostS").textContent = hostScore;
   document.getElementById("opponentS").textContent = opponentScore;
 
@@ -81,6 +81,7 @@ onValue(warRaference, (snapshot) => {
     document.getElementById("winHost").style.backgroundColor = "transparent";
     document.getElementById("winOpponent").style.backgroundColor = "transparent";
   }
+ 
 });
 
 function posToPoints(pos) {

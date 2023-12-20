@@ -5,24 +5,21 @@ const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const warRaference = ref(database, 'currentWars/' + 874);
-const teamReference = ref(database, 'teams')
+const tagReference = ref(database, 'tags/')
 
 var teamHost = "-1";
 var teamOpponent = "-1";
-var hostName = "";
 var penalties = [];
 onValue(warRaference, (snapshot) => {
   let war = snapshot.val();
   teamHost = war.teamHost;
   teamOpponent = war.teamOpponent;
   penalties = war.penalties;
-  get(child(teamReference, teamHost)).then((snapshot) => {
-    hostName = snapshot.val().name;
-  })
-  get(child(teamReference, teamOpponent)).then((snapshot) => {
-    // document.getElementById("warName").textContent = hostName + " - " + snapshot.val().name;
+  get(tagReference).then((snapshot) => {
+    let hostName = snapshot.val().find((element) => element.teamId == teamHost).tag;
+    let opponentName = snapshot.val().find((element) => element.teamId == teamOpponent).tag;
     document.getElementById("hostName").textContent = hostName;
-    document.getElementById("opponentName").textContent = snapshot.val().name;
+    document.getElementById("opponentName").textContent = opponentName;
   })
 
   var mapCount = 0;
