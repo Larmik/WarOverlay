@@ -1,88 +1,104 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-import { getDatabase, ref, child, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  onValue,
+} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
-const firebaseConfig = {databaseURL: "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app"};
+const firebaseConfig = {
+  databaseURL:
+    "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app",
+};
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const warRaference = ref(database, 'currentWars/' + 874);
-const tagReference = ref(database, 'tags/')
+const warRaference = ref(database, "currentWars/" + 874);
+const tagReference = ref(database, "tags/");
 
 var teamHost = "-1";
 var teamOpponent = "-1";
 var penalties = [];
-onValue(warRaference, (snapshot) => {
-  let war = snapshot.val();
-  teamHost = war.teamHost;
-  teamOpponent = war.teamOpponent;
-  penalties = war.penalties;
-  get(tagReference).then((snapshot) => {
-    let hostName = snapshot.val().find((element) => element.teamId == teamHost).tag;
-    let opponentName = snapshot.val().find((element) => element.teamId == teamOpponent).tag;
-    document.getElementById("hostName").textContent = hostName;
-    document.getElementById("opponentName").textContent = opponentName;
+var tags = [];
+get(tagReference)
+  .then((snapshot) => {
+    tags = snapshot.val();
   })
+  .then((_) => {
+    onValue(warRaference, (snapshot) => {
+      let war = snapshot.val();
+      teamHost = war.teamHost;
+      teamOpponent = war.teamOpponent;
+      penalties = war.penalties;
 
-  var mapCount = 0;
-  var hostScore = 0;
-  var opponentScore = 0;
-  var tracks = war.warTracks;
+      document.getElementById("hostName").textContent = tags.find(
+        (element) => element.teamId == teamHost
+      ).tag;
+      document.getElementById("opponentName").textContent = tags.find(
+        (element) => element.teamId == teamOpponent
+      ).tag;
 
-  for (let div of document.querySelectorAll("div")) { 
-    div.remove();
-  }
-  if (tracks) {
-    mapCount = tracks.length;
-    tracks.forEach(track =>
-      track.warPositions.forEach(position => 
-        hostScore += posToPoints(position.position)
-      )
-    );
-    opponentScore = (82*tracks.length) - hostScore;
-    if (penalties) {
-      penalties.forEach (penalty =>
-        {if (penalty.teamId == war.teamHost)
-          hostScore -= penalty.amount
-        if (penalty.teamId == war.teamOpponent)
-        opponentScore -= penalty.amount}
-    )}
-  }
-  var globalScore = hostScore - opponentScore;
-  if (globalScore < 0)
-    document.getElementById("scoreDiff").style.color = "#fa8072"
-  else if (globalScore > 0)
-    document.getElementById("scoreDiff").style.color = "#7fff00"
-  else
-    document.getElementById("scoreDiff").style.color = "#aaaaaa"
-  document.getElementById("mapText").textContent = "Maps restantes : " + (12-mapCount);
-  document.getElementById("scoreDiff").textContent = diffLabel(globalScore);
-  document.getElementById("hostS").textContent = hostScore;
-  document.getElementById("opponentS").textContent = opponentScore;
+      var mapCount = 0;
+      var hostScore = 0;
+      var opponentScore = 0;
+      var tracks = war.warTracks;
 
-  if (globalScore > 40*(12-mapCount))
-  {document.getElementById("winHost").textContent = "WIN";
-  document.getElementById("winHost").style.color = "#7fff00";
-  document.getElementById("winOpponent").textContent = "LOSE";
-  document.getElementById("winOpponent").style.color = "#fa8072";
-  document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
-  document.getElementById("winOpponent").style.backgroundColor = "#ffffffb0";
-  }
-  else if (globalScore < -40*(12-mapCount))
-  {document.getElementById("winOpponent").textContent = "WIN";
-  document.getElementById("winOpponent").style.color = "#7fff00"
-  document.getElementById("winHost").textContent = "LOSE";
-  document.getElementById("winHost").style.color = "#fa8072";
-  document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
-  document.getElementById("winOpponent").style.backgroundColor = "#ffffffb0";
-  }
-  else
-  {
-    document.getElementById("winOpponent").textContent = "";
-    document.getElementById("winHost").textContent = "";
-    document.getElementById("winHost").style.backgroundColor = "transparent";
-    document.getElementById("winOpponent").style.backgroundColor = "transparent";
-  }
- 
-});
+      for (let div of document.querySelectorAll("div")) {
+        div.remove();
+      }
+      if (tracks) {
+        mapCount = tracks.length;
+        tracks.forEach((track) =>
+          track.warPositions.forEach(
+            (position) => (hostScore += posToPoints(position.position))
+          )
+        );
+        opponentScore = 82 * tracks.length - hostScore;
+        if (penalties) {
+          penalties.forEach((penalty) => {
+            if (penalty.teamId == war.teamHost) hostScore -= penalty.amount;
+            if (penalty.teamId == war.teamOpponent)
+              opponentScore -= penalty.amount;
+          });
+        }
+      }
+      var globalScore = hostScore - opponentScore;
+      if (globalScore < 0)
+        document.getElementById("scoreDiff").style.color = "#fa8072";
+      else if (globalScore > 0)
+        document.getElementById("scoreDiff").style.color = "#7fff00";
+      else document.getElementById("scoreDiff").style.color = "#aaaaaa";
+      document.getElementById("mapText").textContent =
+        "Maps restantes : " + (12 - mapCount);
+      document.getElementById("scoreDiff").textContent = diffLabel(globalScore);
+      document.getElementById("hostS").textContent = hostScore;
+      document.getElementById("opponentS").textContent = opponentScore;
+
+      if (globalScore > 40 * (12 - mapCount)) {
+        document.getElementById("winHost").textContent = "WIN";
+        document.getElementById("winHost").style.color = "#7fff00";
+        document.getElementById("winOpponent").textContent = "LOSE";
+        document.getElementById("winOpponent").style.color = "#fa8072";
+        document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
+        document.getElementById("winOpponent").style.backgroundColor =
+          "#ffffffb0";
+      } else if (globalScore < -40 * (12 - mapCount)) {
+        document.getElementById("winOpponent").textContent = "WIN";
+        document.getElementById("winOpponent").style.color = "#7fff00";
+        document.getElementById("winHost").textContent = "LOSE";
+        document.getElementById("winHost").style.color = "#fa8072";
+        document.getElementById("winHost").style.backgroundColor = "#ffffffb0";
+        document.getElementById("winOpponent").style.backgroundColor =
+          "#ffffffb0";
+      } else {
+        document.getElementById("winOpponent").textContent = "";
+        document.getElementById("winHost").textContent = "";
+        document.getElementById("winHost").style.backgroundColor =
+          "transparent";
+        document.getElementById("winOpponent").style.backgroundColor =
+          "transparent";
+      }
+    });
+  });
 
 function posToPoints(pos) {
   if (pos === 1) return 15;
@@ -101,6 +117,6 @@ function posToPoints(pos) {
 }
 
 function diffLabel(diff) {
-  if (diff > 0) return "+"+diff;
+  if (diff > 0) return "+" + diff;
   else return diff;
 }
