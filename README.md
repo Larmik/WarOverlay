@@ -1,5 +1,9 @@
-Hébergement: https://stats-mk-overlay.web.app/{teamID}
-Paramètre teamID : L'identifiant de l'équipe sur MKCentral (à la fin de l'adresse de la page profil de l'équipe)
+# Wars MK8DX - Overlay de stream
+
+## Hébergement
+
+- Adresse : https://stats-mk-overlay.web.app/{teamID}
+- Paramètre teamID : L'identifiant de l'équipe sur MKCentral (à la fin de l'adresse de la page profil de l'équipe)
 
 ## Installation
 
