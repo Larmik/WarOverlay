@@ -1,67 +1,119 @@
 
-th, td {
+th, td { /* Options globales usuelles */
     text-align: center;
     font-family: "Akira Expanded", Arial, sans-serif;
     text-shadow: 3px 3px black;
   }
 
-  table {
-    background: rgba(5, 28, 63, 0.7);
+/*************************************************************************/
+/*                        PARTIE MODIFIABLE                              */
+/*************************************************************************/
+#tableScore { /* Tableau de score */
+    background: rgba(0, 0, 0, 0.7);                 /* Couleur de fond du tableau */
     border-collapse:separate;
-    border:solid rgba(137, 226, 214, 0.7) 3px;
+    border:solid rgba(255, 255, 255, 0.7) 3px;        /* Couleur et épaisseur de bordure du tableau */
+}
+
+#globalTab, #globalTab2 { /* Tableau de décompte des maps */
+  background: rgba(0, 0, 0, 0);
+  border-collapse:separate;
+  border:solid rgba(255, 255, 255, 0.7) 3px;
+}
+
+#globalTab { /* Tableau de décompte de la map en mode colonne */
+    position: fixed;
+    margin: 0 auto;
+    left: 50%;                                          /* Position du tableau       */
+    /*top: 0px;*/                                       /* masquer ceux non utilisés */
+    /*right: 50px;*/                                    /*                           */
+    bottom: 15px;                                        /*                           */
+    transform: translate(-50%, 0%); /* permet de centrer le tableau sur la page */                                
+    border-bottom-right-radius:0px;                    /* ajout d'un arrondi sur les angles */
+    border-bottom-left-radius:0px;                     /*                                   */
+    border-top-right-radius:10px;                        /*                                   */
+    border-top-left-radius:10px;                         /*                                   */
+    /*display:none;*/                                   /* masquer cette option pour afficher le tableau */
   }
 
-  #globalTab {
+#globalTab2{ /* Tableau de décompte de la map en mode linéaire */
     position: fixed;
-    right: 50px;
-    top: 31px;
     margin: 0 auto;
+    /*left: 50px;*/
+    top: 0px;
+    right: 50px;
+    /*bottom: 0px;*/
     border-bottom-right-radius:15px;
     border-bottom-left-radius:15px;
+    border-top-right-radius:0px;
+    border-top-left-radius:0px;
+    display:none;
   }
 
-  #tableScore {
+#tableScore { /* Tableau d'affichage des scores */
     position: fixed;
-    left: 50%;
-    bottom: 31px;
-    transform: translate(-50%, 0%);
     margin: 0 auto;
+    left: 50%;
+    /*top: 0px;*/
+    /*right: 50px;*/
+    bottom: 15px;
+    transform: translate(-50%, 0%); /* permet de centrer le tableau sur la page */
+    border-bottom-right-radius:15px;
+    border-bottom-left-radius:15px;
     border-top-right-radius:15px;
     border-top-left-radius:15px;
   }
 
-  #winHost {
-    border-top-left-radius:10px;
-    border-bottom-right-radius:10px;
-    font-size: 25px;
+#mapText, #mapCount, #mapCountLine { /* Tableau du décompte de map */
+    width: 150px;                                       /* Largeur du tableau */   
+    color: #ffffff;                                   /* Couleur du texte */
+    font-size: 25px;                                    /* Taille du texte */
   }
 
-  #winOpponent {
-    border-top-right-radius:10px;
-    border-bottom-left-radius:10px;
-    font-size: 25px;
-  }
+#mapText {
+  font-size: 10px; 
+}
 
-  #mapText {
-    width: 450px;
+#hostName, #opponentName { /* Colonnes des tags des équipes */
+    width: 200px;
     color: #ffffff;
-    font-size: 25px;
-  }
-
-  #hostName, #opponentName {
-    width: 350px;
-    color: #89e2d6;
     font-size: 30px;
   }
 
-  #scoreDiff {
-    width: 100px;
-    font-family: "DS-Digital", Arial, sans-serif;
-    font-size: 50px;
-  }
-
-  #hostS, #opponentS {
+#hostS, #opponentS { /* Texte d'affichage des scores de chaque équipe */
     font-family: "DS-Digital", Arial, sans-serif;
     color: #ffffff;
     font-size: 50px;
   }
+
+#scoreDiff { /* Colonne d'affichage de la différence de score */
+    width: 150px;
+    font-family: "DS-Digital", Arial, sans-serif;
+    font-size: 50px;
+  }
+
+/*************************************************************************/
+/*                    FIN DE LA PARTIE MODIFIABLE                        */
+/*************************************************************************/
+
+#winHost {
+    width: 50px;
+    font-size: 25px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    border-bottom-right-radius:0px;
+    border-bottom-left-radius:10px;
+    border-top-right-radius:0px;
+    border-top-left-radius:10px;
+  }
+
+#winOpponent {
+    width: 50px;
+    font-size: 25px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:0px;
+    border-top-right-radius:10px;
+    border-top-left-radius:0px;
+  }
+

@@ -9,29 +9,29 @@ th, td { /* Options globales usuelles */
 /*                        PARTIE MODIFIABLE                              */
 /*************************************************************************/
 #tableScore { /* Tableau de score */
-    background: rgba(0, 0, 0, 0.7);                 /* Couleur de fond du tableau */
+    background: rgba(5, 28, 63, 0.7);                 /* Couleur de fond du tableau */
     border-collapse:separate;
-    border:solid rgba(255, 0, 0, 0.7) 3px;        /* Couleur et épaisseur de bordure du tableau */
+    border:solid rgba(137, 226, 214, 0.7) 3px;        /* Couleur et épaisseur de bordure du tableau */
 }
 
 #globalTab, #globalTab2 { /* Tableau de décompte des maps */
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(5, 28, 63, 0.7);
   border-collapse:separate;
-  border:solid rgba(255, 0, 0, 0.7) 3px;
+  border:solid rgba(137, 226, 214, 0.7) 3px;
 }
 
 #globalTab { /* Tableau de décompte de la map en mode colonne */
     position: fixed;
     margin: 0 auto;
-    left: 479px;                                          /* Position du tableau       */
-    /*top: 0px;*/                                       /* masquer ceux non utilisés */
+    left: 50px;                                         /* Position du tableau       */
+    top: 0px;                                           /* masquer ceux non utilisés */
     /*right: 50px;*/                                    /*                           */
-    bottom: 15px;                                        /*                           */                               
-    border-bottom-right-radius:0px;                    /* ajout d'un arrondi sur les angles */
+    /*bottom: 0px;*/                                    /*                           */
+    border-bottom-right-radius:15px;                    /* ajout d'un arrondi sur les angles */
     border-bottom-left-radius:15px;                     /*                                   */
     border-top-right-radius:0px;                        /*                                   */
-    border-top-left-radius:15px;                         /*                                   */
-    /*display:none;*/                                   /* masquer cette option pour afficher le tableau */
+    border-top-left-radius:0px;                         /*                                   */
+    display:none;                                       /* masquer cette option pour afficher le tableau */
   }
 
 #globalTab2{ /* Tableau de décompte de la map en mode linéaire */
@@ -45,7 +45,7 @@ th, td { /* Options globales usuelles */
     border-bottom-left-radius:15px;
     border-top-right-radius:0px;
     border-top-left-radius:0px;
-    display:none;
+    /*display:none;*/
   }
 
 #tableScore { /* Tableau d'affichage des scores */
@@ -54,27 +54,23 @@ th, td { /* Options globales usuelles */
     left: 50%;
     /*top: 0px;*/
     /*right: 50px;*/
-    bottom: 15px;
+    bottom: 0px;
     transform: translate(-50%, 0%); /* permet de centrer le tableau sur la page */
-    border-bottom-right-radius:15px;
+    border-bottom-right-radius:0px;
     border-bottom-left-radius:0px;
     border-top-right-radius:15px;
-    border-top-left-radius:0px;
+    border-top-left-radius:15px;
   }
 
 #mapText, #mapCount, #mapCountLine { /* Tableau du décompte de map */
-    width: 100px;                                       /* Largeur du tableau */   
+    width: 450px;                                       /* Largeur du tableau */   
     color: #ffffff;                                   /* Couleur du texte */
-    font-size: 57px;                                    /* Taille du texte */
+    font-size: 25px;                                    /* Taille du texte */
   }
-
-#mapText {
-  font-size: 16px; 
-}
 
 #hostName, #opponentName { /* Colonnes des tags des équipes */
     width: 200px;
-    color: #ffffff;
+    color: #89e2d6;
     font-size: 30px;
   }
 
@@ -100,7 +96,7 @@ th, td { /* Options globales usuelles */
     writing-mode: vertical-rl;
     text-orientation: upright;
     border-bottom-right-radius:0px;
-    border-bottom-left-radius:10px;
+    border-bottom-left-radius:0px;
     border-top-right-radius:0px;
     border-top-left-radius:10px;
   }
@@ -110,7 +106,7 @@ th, td { /* Options globales usuelles */
     font-size: 25px;
     writing-mode: vertical-rl;
     text-orientation: upright;
-    border-bottom-right-radius:10px;
+    border-bottom-right-radius:0px;
     border-bottom-left-radius:0px;
     border-top-right-radius:10px;
     border-top-left-radius:0px;

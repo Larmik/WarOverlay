@@ -73,7 +73,9 @@ const database = getDatabase(app);
           else if (globalScore > 0)
             document.getElementById("scoreDiff").style.color = "#7fff00";
           else document.getElementById("scoreDiff").style.color = "#aaaaaa";
-          document.getElementById("mapText").textContent =
+          document.getElementById("mapCount").textContent =
+            (12 - mapCount);
+          document.getElementById("mapCountLine").textContent =
             "Maps restantes : " + (12 - mapCount);
           document.getElementById("scoreDiff").textContent =
             diffLabel(globalScore);

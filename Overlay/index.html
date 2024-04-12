@@ -7,33 +7,36 @@
 
     </head>
     <body>
-        <table id="globalTab">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th id="mapText"></th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
         <table id="tableScore">
-            <thead>
-                <tr>
-                    <th id="winHost"></th>
-                    <th></th>
-                    <th id="winOpponent"></th>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
+                    <th id="winHost" rowspan="2"></th>
                     <th id="hostName"></th>
                     <th id="scoreDiff"></th>
                     <th id="opponentName"></th>
+                    <th id="winOpponent" rowspan="2"></th>
                 </tr>
                 <tr>
                     <td id="hostS"></td>
                     <td></td>
                     <td id="opponentS"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="globalTab2">
+            <tbody>
+                <tr>
+                    <th id="mapCountLine"></th>
+                </tr>
+            </tbody>
+        </table>
+        <table id="globalTab">
+            <tbody>
+                <tr>
+                    <th id="mapText">Maps restantes</th>
+                </tr>
+                <tr>
+                    <th id="mapCount"></th>
                 </tr>
             </tbody>
         </table>
