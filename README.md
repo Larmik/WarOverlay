@@ -38,4 +38,4 @@ Si vous voulez une personalisation inédite, vous pouvez créer et envoyer une f
 
 ## Feuilles de style
 
-[OverlayHR](https://github.com/Larmik/WarOverlay/tree/master/Styles)
+[Styles](https://github.com/Larmik/WarOverlay/tree/master/Styles)
