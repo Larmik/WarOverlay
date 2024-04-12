@@ -1,0 +1,24 @@
+{
+  "rules": {
+    ".read": true,
+    "newWars": {
+       ".write": "auth != null",
+    },
+    "teams": {
+       ".write": "auth != null",
+    },
+    "tags": {
+       ".write": "auth != null",
+    },
+    "users": {
+       ".write": "auth != null",
+    },  
+    "currentWars": {
+      // ".write": "auth != null",
+      ".write": true,
+    },
+    "dispos": {
+       ".write": true,
+    }
+  }
+}
