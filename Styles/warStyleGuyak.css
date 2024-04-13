@@ -31,7 +31,7 @@ th, td { /* Options globales usuelles */
     border-bottom-left-radius:15px;                     /*                                   */
     border-top-right-radius:0px;                        /*                                   */
     border-top-left-radius:15px;                         /*                                   */
-    /*display:none;*/                                   /* masquer cette option pour afficher le tableau */
+    display:unset;
   }
 
 #globalTab2{ /* Tableau de décompte de la map en mode linéaire */
