@@ -26,13 +26,13 @@ th, td { /* Options globales usuelles */
     left: 50%;                                          /* Position du tableau       */
     /*top: 0px;*/                                       /* masquer ceux non utilisés */
     /*right: 50px;*/                                    /*                           */
-    bottom: 15px;                                        /*                           */
+    bottom: 15px;                                       /*                           */
     transform: translate(-50%, 0%); /* permet de centrer le tableau sur la page */                                
     border-bottom-right-radius:0px;                    /* ajout d'un arrondi sur les angles */
     border-bottom-left-radius:0px;                     /*                                   */
-    border-top-right-radius:10px;                        /*                                   */
-    border-top-left-radius:10px;                         /*                                   */
-    /*display:none;*/                                   /* masquer cette option pour afficher le tableau */
+    border-top-right-radius:10px;                      /*                                   */
+    border-top-left-radius:10px;                       /*                                   */
+    display:unset;               /* mettre cette option à "none" pour masquer le tableau */
   }
 
 #globalTab2{ /* Tableau de décompte de la map en mode linéaire */
@@ -46,7 +46,7 @@ th, td { /* Options globales usuelles */
     border-bottom-left-radius:15px;
     border-top-right-radius:0px;
     border-top-left-radius:0px;
-    display:none;
+    display:none;				/* mettre cette option à "unset" pour masquer le tableau */
   }
 
 #tableScore { /* Tableau d'affichage des scores */
