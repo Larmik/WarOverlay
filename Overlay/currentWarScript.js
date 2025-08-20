@@ -35,7 +35,7 @@ const database = getDatabase(app);
           teamHost = war.teamHost;
           teamOpponent = war.teamOpponent;
           penalties = war.penalties;
-
+          console.log(war);
           document.getElementById("hostName").textContent = tags.find(
             (element) => element.teamId == teamHost
           ).tag;
@@ -46,16 +46,18 @@ const database = getDatabase(app);
           var mapCount = 0;
           var hostScore = 0;
           var opponentScore = 0;
-          var tracks = war.warTracks;
+          var tracks = war.tracks;
 
           for (let div of document.querySelectorAll("div")) {
             div.remove();
           }
           if (tracks) {
+            console.log(tracks)
             mapCount = tracks.length;
             tracks.forEach((track) =>
-              track.warPositions.forEach(
+              track.positions.forEach(
                 (position) => (hostScore += posToPoints(position.position))
+                
               )
             );
             opponentScore = 82 * tracks.length - hostScore;
