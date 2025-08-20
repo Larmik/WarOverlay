@@ -8,7 +8,7 @@ import {
 
 const firebaseConfig = {
   databaseURL:
-    "https://stats-mk-default-rtdb.europe-west1.firebasedatabase.app",
+    "https://stats-mkworld-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 const app = initializeApp(firebaseConfig);

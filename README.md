@@ -7,12 +7,7 @@
 
 ## Utilisateurs actuels
 
-- Harmonia Concordia : https://stats-mk-overlay.web.app/874
-- Harmonia Symphonia : https://stats-mk-overlay.web.app/2644
-- Beerus Clan : https://stats-mk-overlay.web.app/2433
-- Champa : https://stats-mk-overlay.web.app/2597
-- Turbo Diesel : https://stats-mk-overlay.web.app/2031
-- Ronrons : https://stats-mk-overlay.web.app/1910
+- Harmonia : https://stats-mk-overlay.web.app/874
 
 ## Installation
 
