@@ -1,10 +1,6 @@
-{
-  "database": {
-    "rules": "database.rules.json"
-  },
-  "hosting": {
+{  "hosting": {
     "public": "Overlay",
-    "site": "stats-mk-overlay",
+    "site": "stats-mkworld-overlay",
     "ignore": [
       "firebase.json",
       "**/node_modules/**"

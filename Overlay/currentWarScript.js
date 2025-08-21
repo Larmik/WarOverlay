@@ -7,8 +7,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
 const firebaseConfig = {
-  databaseURL:
-    "https://stats-mkworld-default-rtdb.europe-west1.firebasedatabase.app",
+  apiKey: "AIzaSyBQWV1OoWnqmlyL2yO9A0m9zS5NEMM_3y4",
+  authDomain: "stats-mkworld.firebaseapp.com",
+  databaseURL: "https://stats-mkworld-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "stats-mkworld",
+  storageBucket: "stats-mkworld.firebasestorage.app",
+  messagingSenderId: "566035259986",
+  appId: "1:566035259986:web:a47a0c023cf3012bebf58b",
+  measurementId: "G-PEFD2QDQKT"
 };
 
 const app = initializeApp(firebaseConfig);
