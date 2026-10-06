@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase
 import {
   getDatabase,
   ref,
-  get,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 
@@ -17,125 +16,156 @@ const firebaseConfig = {
   measurementId: "G-PEFD2QDQKT"
 };
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+/* Barème 12 joueurs, aligné sur positionToPoints(is24p = false) et ScoringConstants (Stats MKWorld). */
+const POINTS_BY_POSITION_12P = [15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+const MAX_POINTS_PER_TRACK_12P = 82;
+const TRACKS_PER_WAR = 12;
+/* Écart par manche restante au-delà duquel la victoire est assurée. */
+const WIN_MARGIN_PER_REMAINING_TRACK = 40;
 
+/* Tag affiché quand l'équipe est absente de tags/ (rafraîchi manuellement côté app). */
+const UNKNOWN_TAG = "???";
 
-    const path = window.location.href.split("/")
-    const index = path.length - 1
-    const warRaference = ref(database, "currentWars/" + path[index]);
-    const tagReference = ref(database, "tags/");
+const COLOR_WIN = "#7fff00";
+const COLOR_LOSE = "#fa8072";
+const COLOR_DRAW = "#aaaaaa";
+const BADGE_BACKGROUND = "#ffffffb0";
 
-    var teamHost = "-1";
-    var teamOpponent = "-1";
-    var penalties = [];
-    var tags = [];
+const elements = {
+  hostName: document.getElementById("hostName"),
+  opponentName: document.getElementById("opponentName"),
+  hostScore: document.getElementById("hostS"),
+  opponentScore: document.getElementById("opponentS"),
+  scoreDiff: document.getElementById("scoreDiff"),
+  mapCount: document.getElementById("mapCount"),
+  mapCountLine: document.getElementById("mapCountLine"),
+  winHost: document.getElementById("winHost"),
+  winOpponent: document.getElementById("winOpponent"),
+};
 
-    get(tagReference)
-      .then((snapshot) => {
-        tags = snapshot.val();
-      })
-      .then((_) => {
-        onValue(warRaference, (snapshot) => {
-          let war = snapshot.val();
-          teamHost = war.teamHost;
-          teamOpponent = war.teamOpponent;
-          penalties = war.penalties;
-          console.log(war);
-          document.getElementById("hostName").textContent = tags.find(
-            (element) => element.teamId == teamHost
-          ).tag;
-          document.getElementById("opponentName").textContent = tags.find(
-            (element) => element.teamId == teamOpponent
-          ).tag;
+/* Dernières valeurs reçues de la RTDB ; tags vaut null tant que tags/ n'a pas été lu. */
+let currentWar = null;
+let tags = null;
 
-          var mapCount = 0;
-          var hostScore = 0;
-          var opponentScore = 0;
-          var tracks = war.tracks;
+const database = getDatabase(initializeApp(firebaseConfig));
+const rosterId = rosterIdFromUrl();
 
-          for (let div of document.querySelectorAll("div")) {
-            div.remove();
-          }
-          if (tracks) {
-            console.log(tracks)
-            mapCount = tracks.length;
-            tracks.forEach((track) =>
-              track.positions.forEach(
-                (position) => (hostScore += posToPoints(position.position))
-                
-              )
-            );
-            opponentScore = 82 * tracks.length - hostScore;
-            if (penalties) {
-              penalties.forEach((penalty) => {
-                if (penalty.teamId == war.teamHost) hostScore -= penalty.amount;
-                if (penalty.teamId == war.teamOpponent)
-                  opponentScore -= penalty.amount;
-              });
-            }
-          }
-          var globalScore = hostScore - opponentScore;
-          if (globalScore < 0)
-            document.getElementById("scoreDiff").style.color = "#fa8072";
-          else if (globalScore > 0)
-            document.getElementById("scoreDiff").style.color = "#7fff00";
-          else document.getElementById("scoreDiff").style.color = "#aaaaaa";
-          document.getElementById("mapCount").textContent =
-            (12 - mapCount);
-          document.getElementById("mapCountLine").textContent =
-            "Maps restantes : " + (12 - mapCount);
-          document.getElementById("scoreDiff").textContent =
-            diffLabel(globalScore);
-          document.getElementById("hostS").textContent = hostScore;
-          document.getElementById("opponentS").textContent = opponentScore;
+if (rosterId) {
+  onValue(ref(database, "tags"), (snapshot) => {
+    tags = asArray(snapshot.val());
+    render();
+  });
+  onValue(ref(database, "currentWars/" + rosterId), (snapshot) => {
+    currentWar = snapshot.val();
+    render();
+  });
+}
 
-          if (globalScore > 40 * (12 - mapCount)) {
-            document.getElementById("winHost").textContent = "WIN";
-            document.getElementById("winHost").style.color = "#7fff00";
-            document.getElementById("winOpponent").textContent = "LOSE";
-            document.getElementById("winOpponent").style.color = "#fa8072";
-            document.getElementById("winHost").style.backgroundColor =
-              "#ffffffb0";
-            document.getElementById("winOpponent").style.backgroundColor =
-              "#ffffffb0";
-          } else if (globalScore < -40 * (12 - mapCount)) {
-            document.getElementById("winOpponent").textContent = "WIN";
-            document.getElementById("winOpponent").style.color = "#7fff00";
-            document.getElementById("winHost").textContent = "LOSE";
-            document.getElementById("winHost").style.color = "#fa8072";
-            document.getElementById("winHost").style.backgroundColor =
-              "#ffffffb0";
-            document.getElementById("winOpponent").style.backgroundColor =
-              "#ffffffb0";
-          } else {
-            document.getElementById("winOpponent").textContent = "";
-            document.getElementById("winHost").textContent = "";
-            document.getElementById("winHost").style.backgroundColor =
-              "transparent";
-            document.getElementById("winOpponent").style.backgroundColor =
-              "transparent";
-          }
-        });
-      });
+/* L'URL de l'overlay est de la forme /{rosterId} : on prend le dernier segment non vide du chemin. */
+function rosterIdFromUrl() {
+  return window.location.pathname.split("/").filter(Boolean).pop();
+}
 
-function posToPoints(pos) {
-  if (pos === 1) return 15;
-  if (pos === 2) return 12;
-  if (pos === 3) return 10;
-  if (pos === 4) return 9;
-  if (pos === 5) return 8;
-  if (pos === 6) return 7;
-  if (pos === 7) return 6;
-  if (pos === 8) return 5;
-  if (pos === 9) return 4;
-  if (pos === 10) return 3;
-  if (pos === 11) return 2;
-  if (pos === 12) return 1;
-  else return 0;
+/* Normalise une liste RTDB : tableau, objet indexé (tableau à trous) ou valeur absente. */
+function asArray(value) {
+  if (Array.isArray(value)) return value.filter((item) => item != null);
+  if (value && typeof value === "object") return Object.values(value);
+  return [];
+}
+
+/* teamOpponent est un tableau de rosterIds ; une chaîne isolée est tolérée par sécurité. */
+function opponentIds(war) {
+  const ids = typeof war.teamOpponent === "string" ? [war.teamOpponent] : asArray(war.teamOpponent);
+  return ids.map(String);
+}
+
+function resolveTag(teamId) {
+  if (tags === null) return "";
+  if (teamId == null) return UNKNOWN_TAG;
+  const entry = tags.find((element) => String(element?.teamId) === String(teamId));
+  return entry?.tag || UNKNOWN_TAG;
+}
+
+function positionToPoints(position) {
+  return POINTS_BY_POSITION_12P[position - 1] ?? 0;
+}
+
+function computeScores(war, opponents) {
+  const tracks = asArray(war.tracks);
+  let hostScore = 0;
+  tracks.forEach((track) =>
+    asArray(track?.positions).forEach((position) => {
+      hostScore += positionToPoints(position?.position);
+    })
+  );
+  let opponentScore = MAX_POINTS_PER_TRACK_12P * tracks.length - hostScore;
+
+  const hostId = String(war.teamHost);
+  asArray(war.penalties).forEach((penalty) => {
+    if (penalty?.teamId == null) return;
+    const amount = Number(penalty?.amount) || 0;
+    const teamId = String(penalty.teamId);
+    if (teamId === hostId) hostScore -= amount;
+    else if (opponents.includes(teamId)) opponentScore -= amount;
+  });
+
+  return { hostScore, opponentScore, mapCount: tracks.length };
 }
 
 function diffLabel(diff) {
-  if (diff > 0) return "+" + diff;
-  else return diff;
+  return diff > 0 ? "+" + diff : String(diff);
+}
+
+function diffColor(diff) {
+  if (diff > 0) return COLOR_WIN;
+  if (diff < 0) return COLOR_LOSE;
+  return COLOR_DRAW;
+}
+
+function showBadge(element, text, color) {
+  element.textContent = text;
+  element.style.color = color;
+  element.style.backgroundColor = BADGE_BACKGROUND;
+}
+
+function hideBadge(element) {
+  element.textContent = "";
+  element.style.backgroundColor = "transparent";
+}
+
+function renderResult(diff, remainingTracks) {
+  const winMargin = WIN_MARGIN_PER_REMAINING_TRACK * remainingTracks;
+  if (diff > winMargin) {
+    showBadge(elements.winHost, "WIN", COLOR_WIN);
+    showBadge(elements.winOpponent, "LOSE", COLOR_LOSE);
+  } else if (diff < -winMargin) {
+    showBadge(elements.winOpponent, "WIN", COLOR_WIN);
+    showBadge(elements.winHost, "LOSE", COLOR_LOSE);
+  } else {
+    hideBadge(elements.winHost);
+    hideBadge(elements.winOpponent);
+  }
+}
+
+/* Sans war en cours (nœud absent ou supprimé), l'affichage est laissé en l'état (cf. issue #2). */
+function render() {
+  const war = currentWar;
+  if (!war || typeof war !== "object") return;
+
+  const opponents = opponentIds(war);
+  elements.hostName.textContent = resolveTag(war.teamHost);
+  elements.opponentName.textContent = resolveTag(opponents[0]);
+
+  const { hostScore, opponentScore, mapCount } = computeScores(war, opponents);
+  const diff = hostScore - opponentScore;
+  const remainingTracks = TRACKS_PER_WAR - mapCount;
+
+  elements.scoreDiff.style.color = diffColor(diff);
+  elements.scoreDiff.textContent = diffLabel(diff);
+  elements.hostScore.textContent = hostScore;
+  elements.opponentScore.textContent = opponentScore;
+  elements.mapCount.textContent = remainingTracks;
+  elements.mapCountLine.textContent = "Maps restantes : " + remainingTracks;
+
+  renderResult(diff, remainingTracks);
 }
