@@ -1,3 +1,9 @@
+/* Police Mario Kart World embarquée pour les données chiffrées (scores, différence, maps) */
+@font-face {
+    font-family: "Mario Kart World";
+    src: url("fonts/MarioKartWorldV10-Regular.ttf") format("truetype");
+    font-display: block; /* évite d'afficher brièvement la police de repli avant la police définitive */
+  }
 
 th, td { /* Options globales usuelles */
     text-align: center;
@@ -73,6 +79,10 @@ th, td { /* Options globales usuelles */
   font-size: 10px; 
 }
 
+#mapCount, #mapCountLine { /* Police des chiffres du décompte de map */
+    font-family: "Mario Kart World", Arial, sans-serif;
+  }
+
 #hostName, #opponentName { /* Colonnes des tags des équipes */
     width: 200px;
     color: #ffffff;
@@ -80,14 +90,14 @@ th, td { /* Options globales usuelles */
   }
 
 #hostS, #opponentS { /* Texte d'affichage des scores de chaque équipe */
-    font-family: "DS-Digital", Arial, sans-serif;
+    font-family: "Mario Kart World", Arial, sans-serif;
     color: #ffffff;
     font-size: 50px;
   }
 
 #scoreDiff { /* Colonne d'affichage de la différence de score */
     width: 150px;
-    font-family: "DS-Digital", Arial, sans-serif;
+    font-family: "Mario Kart World", Arial, sans-serif;
     font-size: 50px;
   }
 

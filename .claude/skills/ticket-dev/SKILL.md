@@ -173,15 +173,16 @@ calcul des scores reste cohérent avec l'app (barème, 12p/24p). Lister les éca
    (`Closes #N`) ; sinon `gh issue close <N> -R Larmik/WarOverlay`.
 2. **Passer l'issue dans la colonne « Terminé »** du board « Stats MKWorld »
    (projet `2`, owner `Larmik`) — la fermeture ne la déplace PAS automatiquement.
-   Filtrer sur le dépôt : le board contient aussi les issues de `Stats-MKWorld`, dont
-   les numéros se recouvrent :
+   Récupérer l'item depuis l'issue elle-même (`gh project item-list` est tronqué sur ce
+   board partagé et peut ne pas renvoyer l'issue) :
    ```bash
-   ITEM=$(gh project item-list 2 --owner Larmik --limit 300 --format json \
-     -q '.items[] | select(.content.number==<N> and .content.repository=="Larmik/WarOverlay") | .id')
+   ITEM=$(gh api graphql -f query='{repository(owner:"Larmik",name:"WarOverlay"){issue(number:<N>){projectItems(first:5){nodes{id project{number}}}}}}' \
+     -q '.data.repository.issue.projectItems.nodes[] | select(.project.number==2) | .id')
    gh project item-edit --id "$ITEM" --project-id PVT_kwHOAi0L9s4BdjcN \
      --field-id PVTSSF_lAHOAi0L9s4BdjcNzhYELEw --single-select-option-id 5348c84d
    ```
-   Vérifier ensuite que le statut lu vaut bien `Terminé`.
+   Vérifier ensuite que le statut lu vaut bien `Terminé`
+   (`gh issue view <N> -R Larmik/WarOverlay --json projectItems -q '.projectItems[].status.name'`).
 3. Revenir sur `master` à jour (`git checkout master && git pull --ff-only`).
 4. Rappeler à l'utilisateur que le déploiement (`firebase deploy --only hosting`) reste
    à lancer s'il le souhaite.

@@ -29,6 +29,8 @@ Si vous voulez une personalisation inédite, vous pouvez créer et envoyer une f
 
 ## Polices à installer pour affichage optimisé
 
+La police Mario Kart World des chiffres (scores, différence, maps restantes) est chargée automatiquement par l'overlay : aucune installation nécessaire. Les autres polices du dossier Fonts restent à installer pour les styles qui les utilisent.
+
 [Fonts](https://github.com/Larmik/WarOverlay/tree/master/Fonts)
 
 ## Feuilles de style et exemples d'autres possibilités de personnlisation
