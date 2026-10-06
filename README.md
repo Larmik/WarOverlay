@@ -2,12 +2,12 @@
 
 ## Hébergement
 
-- Adresse : https://stats-mk-overlay.web.app/{teamID}
-- Paramètre teamID : L'identifiant de l'équipe sur MKCentral (à la fin de l'adresse de la page profil de l'équipe)
+- Adresse : https://stats-mk-overlay.web.app/{rosterID}
+- Paramètre rosterID : L'identifiant du roster sur MKCentral (et non pas de l'équipe)
 
 ## Utilisateurs actuels
 
-- Harmonia : https://stats-mk-overlay.web.app/874
+- Harmonia : https://stats-mk-overlay.web.app/3931
 
 ## Installation
 
