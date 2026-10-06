@@ -4,6 +4,11 @@ import {
   ref,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQWV1OoWnqmlyL2yO9A0m9zS5NEMM_3y4",
@@ -47,18 +52,47 @@ const elements = {
 let currentWar = null;
 let tags = null;
 
-const database = getDatabase(initializeApp(firebaseConfig));
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 const rosterId = rosterIdFromUrl();
 
+/* Vrai dès que les écoutes RTDB sont posées : elles ne doivent l'être qu'une fois. */
+let listening = false;
+
+/* La RTDB exige un utilisateur authentifié (auth != null) : on s'authentifie en anonyme,
+   en réutilisant la session persistée par le navigateur si elle existe. */
 if (rosterId) {
-  onValue(ref(database, "tags"), (snapshot) => {
-    tags = asArray(snapshot.val());
-    render();
+  const auth = getAuth(app);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      startListening();
+      return;
+    }
+    signInAnonymously(auth).catch((error) => {
+      console.error("Overlay : échec de l'authentification anonyme Firebase.", error);
+    });
   });
-  onValue(ref(database, "currentWars/" + rosterId), (snapshot) => {
-    currentWar = snapshot.val();
-    render();
-  });
+}
+
+function startListening() {
+  if (listening) return;
+  listening = true;
+  onValue(
+    ref(database, "tags"),
+    (snapshot) => {
+      tags = asArray(snapshot.val());
+      render();
+    },
+    (error) => console.error("Overlay : lecture de tags/ refusée ou annulée.", error)
+  );
+  onValue(
+    ref(database, "currentWars/" + rosterId),
+    (snapshot) => {
+      currentWar = snapshot.val();
+      render();
+    },
+    (error) => console.error("Overlay : lecture de currentWars/" + rosterId + " refusée ou annulée.", error)
+  );
 }
 
 /* L'URL de l'overlay est de la forme /{rosterId} : on prend le dernier segment non vide du chemin. */
